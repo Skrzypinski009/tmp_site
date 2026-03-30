@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Giveaway</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --primary-blue: #007bff;
+            --text-white: #ffffff;
+            --border-radius: 15px;
+            --item-size: 120px;
+            --item-margin: 10px;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-white);
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #app {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            padding: 20px;
+            transition: filter 0.5s ease;
+        }
+
+        h1 { font-size: 1.5rem; margin-bottom: 30px; font-weight: 300; letter-spacing: 1px; }
+
+        .roulette-container {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid #333;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .highlight-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: var(--item-size);
+            height: var(--item-size);
+            border: 3px solid var(--primary-blue);
+            border-radius: 12px;
+            z-index: 10;
+            pointer-events: none;
+            box-shadow: 0 0 20px rgba(0, 123, 255, 0.4);
+        }
+
+        .roll-track {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            will-change: transform;
+        }
+
+        .item {
+            min-width: var(--item-size);
+            height: var(--item-size);
+            margin: 0 var(--item-margin);
+            background: #2a2a2a;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .item img {
+            max-width: 70%;
+            max-height: 70%;
+            object-fit: contain;
+        }
+
+        .btn {
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 80%;
+            transition: background 0.3s;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            max-width: 320px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            z-index: 100;
+            text-align: center;
+            border: 1px solid #444;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 14px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: 1px solid #444;
+            background: #121212;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        .modal img { width: 200px; margin: 10px 0; }
+
+        #truck-view {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 200;
+        }
+
+        #truck-view img { width: 260px; animation: pulse 2s infinite; }
+
+        .blurred { filter: blur(20px); pointer-events: none; }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <h1>SMB Phone Packages</h1>
+
+        <div class="roulette-container">
+            <div class="highlight-box"></div>
+            <div id="rollTrack" class="roll-track"></div>
+        </div>
+
+        <button id="spinBtn" class="btn" onclick="startSpin()">Continue</button>
+    </div>
+
+    <div id="congratsModal" class="modal">
+        <h2 style="color: var(--primary-blue); margin-top:0;">Iphone 17</h2>
+        <div id="wonItemImage"></div>
+        <input type="text" placeholder="Your Name">
+        <input type="email" placeholder="Your Email">
+        <button class="btn" style="margin-top: 15px;" onclick="showTruck()">Get insights!</button>
+    </div>
+
+    <div id="truck-view">
+        <img src="truck.png" alt="Truck">
+    </div>
+
+    <script>
+        const track = document.getElementById('rollTrack');
+        const phoneImages = ['phone1.png', 'phone2.png', 'phone3.png', 'phone4.png', 'phone5.png'];
+        const itemsCount = 70;
+        const itemWidth = 120;
+        const itemMargin = 10;
+        const fullStep = itemWidth + (itemMargin * 2);
+
+        function initRoulette() {
+            track.innerHTML = '';
+            // Resetujemy transition całkowicie
+            track.style.transition = "none";
+
+            for (let i = 0; i < itemsCount; i++) {
+                const randomImg = phoneImages[Math.floor(Math.random() * phoneImages.length)];
+                const div = document.createElement('div');
+                div.className = 'item';
+                div.innerHTML = `<img src="${randomImg}">`;
+                track.appendChild(div);
+            }
+
+            // Ustawienie początkowe nieruchome
+            const containerWidth = document.querySelector('.roulette-container').offsetWidth;
+            const initialOffset = (3 * fullStep) - (containerWidth / 2) + (fullStep / 2);
+            track.style.transform = `translateX(-${initialOffset}px)`;
+
+            // WYMUSZENIE REFLOW - to sprawia, że pozycja "zastyga" przed startem
+            track.getBoundingClientRect();
+        }
+
+        function startSpin() {
+            const btn = document.getElementById('spinBtn');
+            if(btn.disabled) return;
+
+            btn.disabled = true;
+            btn.style.opacity = "0.3";
+
+            // Włączamy animację dopieru po kliknięciu
+            track.style.transition = "transform 8s cubic-bezier(0.15, 0, 0.05, 1)";
+
+            const targetIndex = 55;
+            const containerWidth = document.querySelector('.roulette-container').offsetWidth;
+            const finalOffset = (targetIndex * fullStep) - (containerWidth / 2) + (fullStep / 2);
+
+            track.style.transform = `translateX(-${finalOffset}px)`;
+
+            setTimeout(() => {
+                showModal(targetIndex);
+            }, 8200);
+        }
+
+        function showModal(index) {
+            const modal = document.getElementById('congratsModal');
+            const app = document.getElementById('app');
+            const wonImgSrc = track.children[index].querySelector('img').src;
+
+            document.getElementById('wonItemImage').innerHTML = `<img src="${wonImgSrc}">`;
+
+            app.classList.add('blurred');
+            modal.style.display = 'block';
+        }
+
+        function showTruck() {
+            document.getElementById('congratsModal').style.display = 'none';
+            document.getElementById('truck-view').style.display = 'block';
+        }
+
+        // Inicjalizacja przy starcie
+        window.onload = initRoulette;
+    </script>
+</body>
+</html>
