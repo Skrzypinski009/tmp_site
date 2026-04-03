@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Sofas</title>
+    <link rel="stylesheet" href="../styles/light-theme.css">
+    <link rel="stylesheet" href="../styles/global.css">
+</head>
+<body>
+  <script type="text/javascript" src="../scripts/card-select.js"></script>
+  <script type="text/javascript" src="../scripts/show-truck.js"></script>
+    <header>
+        <h1>Equipment Test</h1>
+        <button class="cart-btn" onclick="openCart()">🛒</button>
+    </header>
+
+    <div class="horizontal-card-list">
+        <div class="horizontal-card" onclick="cardSelected(this, 'Fast E sofa Pro', '../img/sofas/sofa1.png')">
+            <img src="../img/sofas/sofa1.png">
+            <div class="card-info">Fast E sofa pro</div>
+        </div>
+        <div class="horizontal-card" onclick="cardSelected(this, 'Turbo Rider X', '../img/sofas/sofa2.png')">
+            <img src="../img/sofas/sofa2.png">
+            <div class="card-info">Turbo Rider X</div>
+        </div>
+        <div class="horizontal-card" onclick="cardSelected(this, 'City Glide Plus', '../img/sofas/sofa3.png')">
+            <img src="../img/sofas/sofa3.png">
+            <div class="card-info">City Glide Plus</div>
+        </div>
+        <div class="horizontal-card" onclick="cardSelected(this, 'Mountain Volt', '../img/sofas/sofa4.png')">
+            <img src="../img/sofas/sofa4.png">
+            <div class="card-info">Mountain Volt</div>
+        </div>
+        <div class="horizontal-card" onclick="cardSelected(this, 'Road King E', '../img/sofas/sofa5.png')">
+            <img src="../img/sofas/sofa5.png">
+            <div class="card-info">Road King E</div>
+        </div>
+    </div>
+
+    <div id="cart-modal" class="modal-overlay" onclick="closeCart()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2>Cart</h2>
+            <div id="cart-items-container"></div>
+            <button class="btn-insights" onclick="showTruck()">Get insights</button>
+        </div>
+    </div>
+
+    <div id="truck-overlay">
+        <img src="../img/truck.png" class="truck-img">
+    </div>
+
+</body>
+</html>

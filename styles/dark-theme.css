@@ -1,0 +1,11 @@
+:root {
+    --bg-color: #000000;
+    --header-bg: #111111;
+    --card-bg: #191919;
+    --modal-bg: #191919;
+
+    --accent-color: rgba(0, 122, 255, 0.3);
+    --button-color: #00aa00;
+    --radius: 25px;
+    color: white;
+}
