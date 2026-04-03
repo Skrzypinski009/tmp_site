@@ -1,0 +1,11 @@
+:root {
+    --bg-color: #ffffff;
+    --header-bg: #e8e8e8;
+    --card-bg: #f8f8f8;
+    --modal-bg: #eeeeee;
+
+    --accent-color: rgba(0, 122, 255, 0.3);
+    --button-color: #00aa00;
+    --radius: 25px;
+    color: black;
+}
