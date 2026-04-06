@@ -13,6 +13,7 @@ function cardSelected(element, name, img) {
   }
 
   updateCartUI();
+  updateCartCount();
 }
 
 function updateCartUI() {
@@ -27,6 +28,14 @@ function updateCartUI() {
                     <span>${item.name}</span>
                 </div>
             `).join('');
+}
+
+function updateCartCount() {
+  const countTag = document.getElementById('cart-count');
+  if (countTag) {
+    countTag.innerText = cart.length;
+    countTag.style.display = cart.length > 0 ? 'block' : 'none';
+  }
 }
 
 function openCart() {
