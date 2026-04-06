@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Clothes</title>
+    <link rel="stylesheet" href="../styles/light-theme.css">
+    <!-- Custom theme -->
+    <link rel="stylesheet" href="../styles/global.css">
+    <style>
+      :root {
+        --bg-color: #0088ff;
+      }
+     header, .grid {
+       display: none;
+     }
+     #start-button {
+       border: 4px solid white;
+       border-radius: var(--radius);
+       color: white;
+       background-color: var(--bg-color);
+       display: block;
+       padding: 10px;
+       font-size: 25px;
+       margin: 100% 20%;
+       left: 50%;
+     }
+    </style>
+
+</head>
+<body>
+
+  <script type="text/javascript" src="../scripts/card-select.js"></script>
+  <script type="text/javascript" src="../scripts/show-truck.js"></script>
+
+  <div>
+    <script type='text/javascript'>
+     function openSite() {
+       document.getElementById("start-button").style.display = 'none';
+       document.getElementById("header").style.display = 'flex';
+       document.getElementsByClassName("grid")[0].style.display = 'grid';
+     }
+    </script>
+
+    <button id="start-button" onclick="openSite()">
+      Wearhause Inventory Sales
+    </button>
+
+    <header id='header'>
+        <h1>Wearhause Inventory Sales</h1>
+        <div class="cart-icon" onclick="openCart()">
+          <img src="../img/cart.png"  alt="Cart">
+          <span id="cart-count" style="display: none;">0</span>
+        </div>
+    </header>
+
+    <div class="grid grid-2-cols">
+        <div class="grid-card" onclick="cardSelected(this, 'White bag', '../img/clothes/clothes1.png')">
+            <img class="card-img" src="../img/clothes/clothes1.png">
+            <div class="card-info">White bag</div>
+        </div>
+        <div class="grid-card" onclick="cardSelected(this, 'Brown bag', '../img/clothes/clothes2.png')">
+            <img class="card-img" src="../img/clothes/clothes2.png">
+            <div class="card-info">Brown bag</div>
+        </div>
+        <div class="grid-card" onclick="cardSelected(this, 'Green bag', '../img/clothes/clothes3.png')">
+            <img class="card-img" src="../img/clothes/clothes3.png">
+            <div class="card-info">Green bag</div>
+        </div>
+        <div class="grid-card" onclick="cardSelected(this, 'Pink cosmetics', '../img/clothes/clothes4.png')">
+            <img class="card-img" src="../img/clothes/clothes4.png">
+            <div class="card-info">Pink cosmetics</div>
+        </div>
+        <div class="grid-card" onclick="cardSelected(this, 'Pink boots', '../img/clothes/clothes5.png')">
+            <img class="card-img" src="../img/clothes/clothes5.png">
+            <div class="card-info">Pink boots</div>
+        </div>
+        <div class="grid-card" onclick="cardSelected(this, 'Brown boots', '../img/clothes/clothes5.png')">
+            <img class="card-img" src="../img/clothes/clothes6.png">
+            <div class="card-info">Brown boots</div>
+        </div>
+        <div class="grid-card" onclick="cardSelected(this, 'White boots', '../img/clothes/clothes5.png')">
+            <img class="card-img" src="../img/clothes/clothes7.png">
+            <div class="card-info">White boots</div>
+        </div>
+        <div class="grid-card" onclick="cardSelected(this, 'Cosmetics', '../img/clothes/clothes5.png')">
+            <img class="card-img" src="../img/clothes/clothes8.png">
+            <div class="card-info">Cosmetics</div>
+        </div>
+        <div class="grid-card" onclick="cardSelected(this, 'Road King E', '../img/clothes/clothes5.png')">
+            <img class="card-img" src="../img/clothes/clothes9.png">
+            <div class="card-info">Green clothes</div>
+        </div>
+        <div class="grid-card" onclick="cardSelected(this, 'Road King E', '../img/clothes/clothes5.png')">
+            <img class="card-img" src="../img/clothes/clothes10.png">
+            <div class="card-info">Green clothes</div>
+        </div>
+    </div>
+
+    <div id="cart-modal" class="modal-overlay" onclick="closeCart()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2>Cart</h2>
+            <div id="cart-items-container"></div>
+            <button class="btn-insights" onclick="showTruck()">Get insights</button>
+        </div>
+    </div>
+
+    <div id="truck-overlay">
+        <img src="../img/truck.png" class="truck-img">
+    </div>
+
+</div>
+</body>
+</html>
