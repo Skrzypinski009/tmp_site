@@ -194,6 +194,12 @@ header h1 {
 
 }
 
+.grid-card.selected {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px var(--accent-color);
+    transform: scale(1.02);
+}
+
 .grid-card .card-img {
     max-width: 100%;
     margin: 0 10px;
