@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Phones</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="../styles/light-theme.css">
+    <link rel="stylesheet" href="../styles/global.css">
+
+  </head>
+
+  <body>
+    <script type="text/javascript" src="../scripts/card-select.js"></script>
+    <script type="text/javascript" src="../scripts/show-truck.js"></script>
+
+    <header id='header'>
+        <h1>Get Phone</h1>
+        <div class="cart-icon" onclick="openCart()">
+          <img src="../img/cart.png"  alt="Cart">
+          <span id="cart-count" style="display: none;">0</span>
+        </div>
+    </header>
+
+    <div class="grid grid-2-cols">
+        <div class="grid-card" onclick="cardSelected(this, 'Iphone purple', '../img/phones/phone1.png')">
+            <img class="card-img" src="../img/phones/phone1.png">
+            <div class="card-info">Iphone purple</div>
+        </div>
+
+        <div class="grid-card" onclick="cardSelected(this, 'Iphone white', '../img/phones/phone2.png')">
+            <img class="card-img" src="../img/phones/phone2.png">
+            <div class="card-info">Iphone white</div>
+        </div>
+
+        <div class="grid-card" onclick="cardSelected(this, 'Iphone pink', '../img/phones/phone3.png')">
+            <img class="card-img" src="../img/phones/phone3.png">
+            <div class="card-info">Iphone pink</div>
+        </div>
+
+        <div class="grid-card" onclick="cardSelected(this, 'Iphone orange', '../img/phones/phone4.png')">
+            <img class="card-img" src="../img/phones/phone4.png">
+            <div class="card-info">Iphone orange</div>
+        </div>
+
+        <div class="grid-card" onclick="cardSelected(this, 'Iphone blue', '../img/phones/phone5.png')">
+            <img class="card-img" src="../img/phones/phone5.png">
+            <div class="card-info">Iphone blue</div>
+        </div>
+
+        <div class="grid-card" onclick="cardSelected(this, 'Iphone red', '../img/phones/phone6.png')">
+            <img class="card-img" src="../img/phones/phone6.png">
+            <div class="card-info">Iphone red</div>
+        </div>
+
+        <div class="grid-card" onclick="cardSelected(this, 'Iphone yellow', '../img/phones/phone7.png')">
+            <img class="card-img" src="../img/phones/phone7.png">
+            <div class="card-info">Iphone yellow</div>
+        </div>
+
+        <div class="grid-card" onclick="cardSelected(this, 'Iphone green', '../img/phones/phone8.png')">
+            <img class="card-img" src="../img/phones/phone8.png">
+            <div class="card-info">Iphone green</div>
+        </div>
+    </div>
+
+    <div id="cart-modal" class="modal-overlay" onclick="closeCart()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2>Cart</h2>
+            <div id="cart-items-container"></div>
+            <button class="btn-insights" onclick="showTruck()">Get insights</button>
+        </div>
+    </div>
+
+    <div id="truck-overlay">
+        <img src="../img/truck.png" class="truck-img">
+    </div>
+  </body>
+</html>
