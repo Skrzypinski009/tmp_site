@@ -6,15 +6,15 @@
     <title>E-bikes App Fix</title>
     <style>
         :root {
-            --bg-color: #191919;
-            --card-bg: #292929;
+            --bg-color: #eeeeee;
+            --card-bg: white;
             --accent-color: #007aff;
             --radius: 25px;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-            color: white;
+            color: black;
             background-color: var(--bg-color);
             margin: 0;
             padding: 0;
@@ -26,7 +26,7 @@
             top: 0;
             width: 100%;
             height: 100px;
-            background: #222222;
+            background: white;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             display: flex;
@@ -55,7 +55,7 @@
 
         /* Lista rowerów */
         .bike-list {
-            padding: 100px 16px 40px 16px;
+            padding: 140px 16px 40px 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -134,8 +134,8 @@
         }
 
         .modal-content {
-            background: #1c1c1e;
-            color: white;
+            background: #eeeeee;
+            color: black;
             width: 85%;
             max-width: 350px;
             border-radius: 30px;
@@ -151,13 +151,13 @@
             align-items: center;
             gap: 12px;
             margin-bottom: 10px;
-            background: rgba(255,255,255,0.1);
+            background: white;
             padding: 8px;
             border-radius: 12px;
         }
 
         .cart-item img {
-            width: 45px; height: 45px; border-radius: 8px; object-fit: cover;
+            width: 60px; height: 45px; border-radius: 8px; object-fit: cover;
         }
 
         .btn-insights {
@@ -204,24 +204,24 @@
     </header>
 
     <div class="bike-list">
-        <div class="bike-card" onclick="bikeSelected(this, 'Fast E bike Pro', 'bike1.png')">
-            <img src="bike1.png" onerror="this.src='https://picsum.photos/seed/b1/500/300'">
+        <div class="bike-card" onclick="bikeSelected(this, 'Fast E bike Pro', '../img/bikes/bike1.png')">
+            <img src="../img/bikes/bike1.png" onerror="this.src='https://picsum.photos/seed/b1/500/300'">
             <div class="bike-info">Fast E bike pro</div>
         </div>
-        <div class="bike-card" onclick="bikeSelected(this, 'Turbo Rider X', 'bike2.png')">
-            <img src="bike2.png" onerror="this.src='https://picsum.photos/seed/b2/500/300'">
+        <div class="bike-card" onclick="bikeSelected(this, 'Turbo Rider X', '../img/bikes/bike2.png')">
+            <img src="../img/bikes/bike2.png" onerror="this.src='https://picsum.photos/seed/b2/500/300'">
             <div class="bike-info">Turbo Rider X</div>
         </div>
-        <div class="bike-card" onclick="bikeSelected(this, 'City Glide Plus', 'bike3.png')">
-            <img src="bike3.png" onerror="this.src='https://picsum.photos/seed/b3/500/300'">
+        <div class="bike-card" onclick="bikeSelected(this, 'City Glide Plus', '../img/bikes/bike3.png')">
+            <img src="../img/bikes/bike3.png" onerror="this.src='https://picsum.photos/seed/b3/500/300'">
             <div class="bike-info">City Glide Plus</div>
         </div>
-        <div class="bike-card" onclick="bikeSelected(this, 'Mountain Volt', 'bike4.png')">
-            <img src="bike4.png" onerror="this.src='https://picsum.photos/seed/b4/500/300'">
+        <div class="bike-card" onclick="bikeSelected(this, 'Mountain Volt', '../img/bikes/bike4.png')">
+            <img src="../img/bikes/bike4.png" onerror="this.src='https://picsum.photos/seed/b4/500/300'">
             <div class="bike-info">Mountain Volt</div>
         </div>
-        <div class="bike-card" onclick="bikeSelected(this, 'Road King E', 'bike5.png')">
-            <img src="bike5.png" onerror="this.src='https://picsum.photos/seed/b5/500/300'">
+        <div class="bike-card" onclick="bikeSelected(this, 'Road King E', '../img/bikes/bike5.png')">
+            <img src="../img/bikes/bike5.png" onerror="this.src='https://picsum.photos/seed/b5/500/300'">
             <div class="bike-info">Road King E</div>
         </div>
     </div>
