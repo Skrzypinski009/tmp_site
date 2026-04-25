@@ -34,6 +34,14 @@
             align-items: center;
         }
 
+        #pulse {
+          position: absolute;
+          top: 240px;
+          font-size: 40px;
+          color: transparent;
+          transition: color 0.3s linear;
+        }
+
         .progress-ring {
             position: absolute;
             transform: rotate(-90deg);
@@ -41,7 +49,7 @@
 
         .progress-ring__circle {
             transition: stroke-dashoffset 2s linear;
-            stroke: #ff69b4; /* Różowy kolor */
+            stroke: #ff3f3f;
             stroke-linecap: round;
         }
 
@@ -128,7 +136,10 @@
             />
         </svg>
         <div class="icon-wrapper">
-            <img src="../img/medical/icon.png" alt="Ikona">
+            <img src="../img/medical/icon2.png" alt="Ikona">
+        </div>
+        <div id="pulse">
+          63.2 BPM
         </div>
     </div>
 
@@ -158,7 +169,7 @@
     function startLoading() {
         setProgress(100);
         timer = setTimeout(() => {
-            showCheckmarks();
+            show_heart_pulse();
         }, 2000); // Czas trwania ładowania paska (musi być zgodny z CSS transition)
     }
 
@@ -230,6 +241,10 @@ function showCheckmarks() {
         startLoading();
     });
     scanner.addEventListener('touchend', resetLoading);
+
+ function show_heart_pulse() {
+   document.getElementById("pulse").style.color = "#ffffff";
+ }
 
 </script>
 
