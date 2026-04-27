@@ -136,7 +136,7 @@
             />
         </svg>
         <div class="icon-wrapper">
-            <img src="../img/medical/icon3.png" alt="Ikona">
+            <img src="../img/medical/icon3_before.png" alt="Ikona">
         </div>
     </div>
 
@@ -167,6 +167,7 @@
         setProgress(100);
         timer = setTimeout(() => {
             showCheckmarks();
+            changeIconPopJS("../img/medical/icon3.png");
         }, 2000); // Czas trwania ładowania paska (musi być zgodny z CSS transition)
     }
 
@@ -229,8 +230,11 @@ function showCheckmarks() {
         iconArea.appendChild(check);
     }
 }
+function changeIconPopJS(newSrc) {
+    const img = document.querySelector('.icon-wrapper img');
+    img.src = newSrc;
+}    // Obsługa dotyku i myszki
 
-    // Obsługa dotyku i myszki
     scanner.addEventListener('mousedown', startLoading);
     scanner.addEventListener('mouseup', resetLoading);
     scanner.addEventListener('touchstart', (e) => {
