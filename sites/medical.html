@@ -11,7 +11,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #1a1a1a;
+            background-color: #f5a2d5;
             font-family: sans-serif;
         }
 
@@ -49,7 +49,7 @@
 
         .progress-ring__circle {
             transition: stroke-dashoffset 2s linear;
-            stroke: #ff3f3f;
+            stroke: #ec64ca;
             stroke-linecap: round;
         }
 
@@ -87,7 +87,7 @@
 
         .scanner:active {
             transform: scale(0.95);
-            filter: brightness(1.2);
+            filter: brightness(0) invert(0.9);
         }
 
         /* Emotki zielonego ptaszka */
@@ -136,10 +136,7 @@
             />
         </svg>
         <div class="icon-wrapper">
-            <img src="../img/medical/icon2.png" alt="Ikona">
-        </div>
-        <div id="pulse">
-          63.2 BPM
+            <img src="../img/medical/icon3.png" alt="Ikona">
         </div>
     </div>
 
@@ -169,7 +166,7 @@
     function startLoading() {
         setProgress(100);
         timer = setTimeout(() => {
-            show_heart_pulse();
+            showCheckmarks();
         }, 2000); // Czas trwania ładowania paska (musi być zgodny z CSS transition)
     }
 
@@ -219,12 +216,12 @@ function showCheckmarks() {
     const oldChecks = iconArea.querySelectorAll('.checkmark');
     oldChecks.forEach(el => el.remove());
 
-    for (let i = 0; i < 3; i++) { // Zwiększyłem do 5 dla lepszego efektu
+    for (let i = 0; i < 4; i++) { // Zwiększyłem do 5 dla lepszego efektu
         const new_pos = get_new_position(prev_points);
         prev_points.push(new_pos); // Dodajemy obiekt z pozycją
 
         const check = document.createElement('span');
-        check.innerText = '✅';
+        check.innerText = '👶🏻';
         check.className = 'checkmark';
         check.style.left = `${new_pos.x}px`;
         check.style.top = `${new_pos.y}px`;
