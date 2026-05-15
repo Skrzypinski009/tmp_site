@@ -45,3 +45,34 @@ function openCart() {
 function closeCart() {
   document.getElementById('cart-modal').style.display = 'none';
 }
+
+function emojiEmitt(element, emoji) {
+  const rect = element.getBoundingClientRect();
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+  for (let i = 0; i < 40; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.innerText = emoji;
+
+    const startX = rect.left + Math.random() * rect.width;
+    const startY = rect.top + scrollTop + Math.random() * rect.height;
+
+    particle.style.left = startX + 'px';
+    particle.style.top = startY + 'px';
+
+    const dx = (Math.random() - 0.5) * 350 + 'px';
+    const dy = (Math.random() - 1) * 350 + 'px';
+    particle.style.setProperty('--dx', dx);
+    particle.style.setProperty('--dy', dy);
+
+    document.body.appendChild(particle);
+    particle.addEventListener('animationend', () => particle.remove());
+  }
+}
+
+
+function cardSelectedWithEmoji(element, name, img, emoji) {
+  cardSelected(element, name, img);
+  emojiEmitt(element, emoji)
+}
