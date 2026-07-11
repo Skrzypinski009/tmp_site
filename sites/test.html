@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sprawdź swoje szczęście</title>
+<style>
+  :root{
+    --bg: #5b2fe0;
+    --ring-track: rgba(255,255,255,0.25);
+    --ring-fill: #0a0a0a;
+    --circle-bg: #ffffff;
+    --red: #ff3b30;
+    --green: #1fa855;
+    --text: #ffffff;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100hv;
+    margin: 0;
+    background: var(--bg);
+    overflow: hidden;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    user-select: none;
+  }
+
+  .screen {
+    width: 100%;
+    max-width: 420px;
+    height: 100dvh;
+    max-height: 800px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12vh 24px 0;
+    cursor: pointer;
+  }
+
+  .ring-wrap {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+  }
+
+  /* the animated filling border */
+  .ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(var(--ring-fill) 0deg, var(--ring-fill) var(--progress, 0deg), var(--ring-track) var(--progress, 0deg));
+    padding: 6px;
+    transition: none;
+  }
+
+  .ring.animating {
+    transition: --progress 0.05s linear;
+  }
+
+  .circle {
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    background: var(--circle-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .smiley {
+    width: 62%;
+    height: 62%;
+    object-fit: contain;
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  .smiley.show {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .badge {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.4);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(.34,1.56,.64,1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  }
+
+  .badge.show {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .badge-tl {
+    top: -8px;
+    left: -8px;
+    transition-delay: 0.05s;
+  }
+
+  .badge-br {
+    bottom: -8px;
+    right: -8px;
+    transition-delay: 0.18s;
+  }
+
+  .badge svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .label {
+    margin-top: 34px;
+    color: var(--text);
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 0.2px;
+    min-height: 24px;
+    opacity: 1;
+    transition: opacity 0.25s ease;
+  }
+
+  .label.hidden {
+    opacity: 0;
+  }
+
+  .dots {
+    position: absolute;
+    bottom: 14vh;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;
+  }
+
+  .dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    transition: opacity 0.15s ease;
+  }
+
+  .dot-red { background: var(--red); }
+  .dot-green { background: var(--green); }
+
+  .dot.dim { opacity: 0.15; }
+</style>
+</head>
+<body>
+
+<div class="screen" id="screen">
+  <div class="ring-wrap">
+    <div class="ring" id="ring">
+      <div class="circle">
+        <img class="smiley" id="smiley" alt="">
+      </div>
+    </div>
+    <div class="badge badge-tl" id="badgeTL">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="badge badge-br" id="badgeBR">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <div class="label" id="label">Hold the phone up to your hand</div>
+
+  <div class="dots">
+    <div class="dot dot-red" id="dotRed"></div>
+    <div class="dot dot-green" id="dotGreen"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const screen = document.getElementById('screen');
+  const ring = document.getElementById('ring');
+  const label = document.getElementById('label');
+  const smiley = document.getElementById('smiley');
+  const badgeTL = document.getElementById('badgeTL');
+  const badgeBR = document.getElementById('badgeBR');
+  const dotRed = document.getElementById('dotRed');
+  const dotGreen = document.getElementById('dotGreen');
+
+  // Smiley image is loaded from an external file so it can be swapped freely.
+  // To change it: replace smile.png (same folder as this HTML file) with any
+  // other image, keeping the filename "smile.png" — or edit the path below.
+  smiley.src = "../img/test/test.png";
+
+  let running = false;
+  let done = false;
+  let blinkInterval = null;
+  let progress = 0;
+  let rafId = null;
+  const DURATION = 3000;
+
+  function setProgress(deg){
+    ring.style.setProperty('--progress', deg + 'deg');
+  }
+
+  function startBlink(){
+    let redOn = true;
+    dotRed.classList.remove('dim');
+    dotGreen.classList.add('dim');
+    blinkInterval = setInterval(() => {
+      redOn = !redOn;
+      dotRed.classList.toggle('dim', !redOn);
+      dotGreen.classList.toggle('dim', redOn);
+    }, 350);
+  }
+
+  function stopBlink(){
+    if (blinkInterval) clearInterval(blinkInterval);
+    blinkInterval = null;
+    dotRed.classList.remove('dim');
+    dotGreen.classList.remove('dim');
+  }
+
+  function animateRing(startTime){
+    const elapsed = performance.now() - startTime;
+    const t = Math.min(elapsed / DURATION, 1);
+    setProgress(t * 360);
+    if (t < 1){
+      rafId = requestAnimationFrame(() => animateRing(startTime));
+    } else {
+      finish();
+    }
+  }
+
+  function start(){
+    if (running || done) return;
+    running = true;
+    ring.classList.add('animating');
+    startBlink();
+    const startTime = performance.now();
+    rafId = requestAnimationFrame(() => animateRing(startTime));
+  }
+
+  function finish(){
+    running = false;
+    done = true;
+    stopBlink();
+    ring.classList.remove('animating');
+
+    label.classList.add('hidden');
+    smiley.classList.add('show');
+    badgeTL.classList.add('show');
+    badgeBR.classList.add('show');
+  }
+
+  screen.addEventListener('click', start);
+  screen.addEventListener('touchstart', function(e){
+    e.preventDefault();
+    start();
+  }, { passive: false });
+})();
+</script>
+
+</body>
+</html>
