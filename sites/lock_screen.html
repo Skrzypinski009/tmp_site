@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Lock Screen</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --glass: rgba(255,255,255,0.10);
+    --glass-strong: rgba(255,255,255,0.18);
+    --glass-border: rgba(255,255,255,0.25);
+    --text-hi:#ffffff;
+    --text-lo:rgba(255,255,255,0.65);
+    --ok:#34d399;
+    --bad:#fb7185;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;height:100%;
+    font-family:'Manrope',sans-serif;
+    background:#000;
+    height:100vh;
+    overflow:hidden;
+  }
+
+  .phone{
+    position:relative;
+    width:100%;
+    height:100vh;
+    overflow:hidden;
+  }
+
+  /* ---------- Background photo ---------- */
+  .bg-photo{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    z-index:0;
+    filter: blur(0px) brightness(0.85);
+    transition: filter .4s ease;
+  }
+  .bg-photo.blurred{
+    filter: blur(20px) brightness(0.55);
+  }
+
+  .vignette{
+    position:absolute; inset:0; z-index:1;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.5) 100%);
+    pointer-events:none;
+  }
+
+  /* ---------- Content ---------- */
+  .content{
+    position:relative; z-index:2;
+    width:100%; height:100%;
+    max-width:420px;
+    margin:0 auto;
+    display:flex; flex-direction:column;
+    align-items:center;
+    padding: 6vh 24px calc(4vh + 10px);
+  }
+
+  .clock{
+    text-align:center;
+    margin-top: 2vh;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+  .time{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:300;
+    font-size: clamp(56px, 16vw, 88px);
+    letter-spacing: -2px;
+    color: var(--text-hi);
+    line-height:1;
+  }
+  .date{
+    margin-top:8px;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:1.5px;
+    color: var(--text-lo);
+  }
+
+  /* ---------- Code field ---------- */
+  .code-field{
+    margin-top:auto;
+    margin-bottom:22px;
+    display:flex;
+    gap:12px;
+    padding:14px 20px;
+    background: var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius:20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+  }
+  .slot{
+    width:42px; height:42px;
+    border-radius:12px;
+    background: rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.16);
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px;
+    transition: transform .15s ease, background .15s ease;
+  }
+  .slot.filled{
+    background: rgba(255,255,255,0.20);
+    transform: scale(1.05);
+  }
+  .code-field.shake{
+    animation: shake .4s ease;
+  }
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-8px);}
+    40%{transform:translateX(8px);}
+    60%{transform:translateX(-6px);}
+    80%{transform:translateX(6px);}
+  }
+
+  /* ---------- Keypad ---------- */
+  .keypad{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:16px;
+    width:100%;
+    max-width:340px;
+  }
+  .key{
+    aspect-ratio:1/1;
+    border-radius:50%;
+    border:1px solid var(--glass-border);
+    background: var(--glass);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display:flex; align-items:center; justify-content:center;
+    font-size: clamp(26px, 7vw, 32px);
+    cursor:pointer;
+    user-select:none;
+    -webkit-user-select:none;
+    transition: transform .12s ease, background .12s ease;
+  }
+  .key:active{
+    transform: scale(0.88);
+    background: var(--glass-strong);
+  }
+
+  /* ---------- Result overlay ---------- */
+  .result-overlay{
+    position:absolute; inset:0; z-index:5;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    background: rgba(10,14,25,0.25);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    transition: opacity .35s ease, backdrop-filter .35s ease, -webkit-backdrop-filter .35s ease;
+    cursor:pointer;
+  }
+  .result-overlay.show{
+    opacity:1;
+    pointer-events:auto;
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+  }
+  .result-circle{
+    width:110px; height:110px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  }
+  .result-circle.ok{ background: var(--ok); }
+  .result-circle.bad{ background: var(--bad); }
+  .result-circle svg{ width:52px; height:52px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+
+  <img class="bg-photo" id="bgPhoto"
+       src="../img/lock_screen/background.jpg"
+       alt="background">
+
+  <div class="vignette"></div>
+
+  <div class="content" id="content">
+    <div class="clock">
+      <div class="time" id="timeEl">00:00</div>
+      <div class="date" id="dateEl">—</div>
+    </div>
+
+    <div class="code-field" id="codeField">
+      <div class="slot" data-i="0"></div>
+      <div class="slot" data-i="1"></div>
+      <div class="slot" data-i="2"></div>
+      <div class="slot" data-i="3"></div>
+    </div>
+
+    <div class="keypad" id="keypad"></div>
+  </div>
+
+  <div class="result-overlay" id="resultOverlay">
+    <div class="result-circle" id="resultCircle">
+      <svg id="resultIcon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ---------- Clock ----------
+  const timeEl = document.getElementById('timeEl');
+  const dateEl = document.getElementById('dateEl');
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  function updateClock(){
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2,'0');
+    const m = String(now.getMinutes()).padStart(2,'0');
+    timeEl.textContent = `${h}:${m}`;
+    dateEl.textContent = `${dayNames[now.getDay()]}, ${monthNames[now.getMonth()]} ${now.getDate()}`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ---------- Keypad ----------
+  const emojis = ['❤️','😎','⭐','😊','🔥','🎉','👍','🌈','🍕'];
+  const keypad = document.getElementById('keypad');
+  emojis.forEach(e=>{
+    const btn = document.createElement('div');
+    btn.className = 'key';
+    btn.textContent = e;
+    btn.addEventListener('click', ()=> onEmojiPress(e));
+    keypad.appendChild(btn);
+  });
+
+  // ---------- Code logic ----------
+  const CORRECT_CODE = ['❤️','🍕','😎','🔥'];
+  const slots = Array.from(document.querySelectorAll('.slot'));
+  const codeField = document.getElementById('codeField');
+  const content = document.getElementById('content');
+  const bgPhoto = document.getElementById('bgPhoto');
+  const resultOverlay = document.getElementById('resultOverlay');
+  const resultCircle = document.getElementById('resultCircle');
+  const resultIcon = document.getElementById('resultIcon');
+
+  const CHECK_PATH = 'M5 13l4 4L19 7';
+  const CROSS_PATH_1 = 'M6 6l12 12';
+  const CROSS_PATH_2 = 'M18 6L6 18';
+
+  let current = [];
+  let locked = false;
+
+  resultOverlay.addEventListener('click', resetScreen);
+
+  function onEmojiPress(emoji){
+    if(locked) return;
+    if(current.length >= 4) return;
+
+    current.push(emoji);
+    const slot = slots[current.length - 1];
+    slot.textContent = emoji;
+    slot.classList.add('filled');
+
+    if(current.length === 4){
+      locked = true;
+      setTimeout(evaluateCode, 200);
+    }
+  }
+
+  function evaluateCode(){
+    const isCorrect = current.every((e,i)=> e === CORRECT_CODE[i]);
+    showResult(isCorrect);
+  }
+
+  function showResult(isCorrect){
+    bgPhoto.classList.add('blurred');
+
+    resultCircle.className = 'result-circle ' + (isCorrect ? 'ok' : 'bad');
+    resultIcon.innerHTML = isCorrect
+      ? `<path d="${CHECK_PATH}" stroke="white" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`
+      : `<path d="${CROSS_PATH_1}" stroke="white" stroke-width="2.6" stroke-linecap="round"/><path d="${CROSS_PATH_2}" stroke="white" stroke-width="2.6" stroke-linecap="round"/>`;
+
+    if(!isCorrect){
+      codeField.classList.add('shake');
+    }
+
+    resultOverlay.classList.add('show');
+  }
+
+  function resetScreen(){
+    resultOverlay.classList.remove('show');
+    bgPhoto.classList.remove('blurred');
+    codeField.classList.remove('shake');
+
+    slots.forEach(s=>{
+      s.textContent = '';
+      s.classList.remove('filled');
+    });
+    current = [];
+    locked = false;
+  }
+</script>
+
+</body>
+</html>
