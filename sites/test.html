@@ -6,13 +6,15 @@
 <title>Sprawdź swoje szczęście</title>
 <style>
   :root{
-    --bg: #ffffff;
+    --bg: #034aad;
     --ring-track: rgba(255,255,255,0.25);
     --ring-fill: #0a0a0a;
     --circle-bg: #8ac6ff;
     --red: #ff3b30;
     --green: #1fa855;
-    --text: #000000;
+    --red-light: #ff5d52;
+    --green-light: #3fca77;
+    --text: #ffffff;
   }
 
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -47,8 +49,8 @@
 
   .ring-wrap {
     position: relative;
-    width: 200px;
-    height: 200px;
+    width: 280px;
+    height: 280px;
     flex-shrink: 0;
   }
 
@@ -155,21 +157,37 @@
   }
 
   .dot {
-    width: 26px;
-    height: 26px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     transition: opacity 0.15s ease;
   }
 
-  .dot-red { background: var(--red); }
-  .dot-green { background: var(--green); }
+  .dot-red {
+    background: var(--red-light);
+    box-shadow: 0 0 10px var(--red);
+  }
+  .dot-green {
+    background: var(--green-light);
+    box-shadow: 0 0 10px var(--green);
+  }
 
   .dot.dim { opacity: 0.15; }
+
+  h1{
+    color: var(--text);
+  }
+
+  hr{
+    background-color: var(--text);
+  }
 </style>
 </head>
 <body>
 
 <div class="screen" id="screen">
+  <h1><b>MEDICAL SOFTWARE</b></h1>
+  <hr/>
   <div class="ring-wrap">
     <div class="ring" id="ring">
       <div class="circle">
