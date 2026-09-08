@@ -121,8 +121,6 @@
   .img-wrap img{
     width:100%; height:100%; object-fit:contain; display:block;
   }
-  .img-wrap svg{ width:66%; height:66%; }
-  .tile.selected .img-wrap svg{ width:38%; height:38%; }
 
   .name{
     margin-top:10px;
@@ -330,19 +328,6 @@
 
   var cart = {}; // id -> months
 
-  function bikeSVG(p){
-    return '<svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">' +
-      '<circle cx="26" cy="56" r="18" fill="none" stroke="'+p.color+'" stroke-width="4"/>' +
-      '<circle cx="88" cy="56" r="18" fill="none" stroke="'+p.color+'" stroke-width="4"/>' +
-      '<circle cx="26" cy="56" r="2.4" fill="'+p.accent+'"/>' +
-      '<circle cx="88" cy="56" r="2.4" fill="'+p.accent+'"/>' +
-      '<path d="M26 56 L52 24 L70 24 M26 56 L58 56 L88 56 M58 56 L46 32 M70 24 L88 56" ' +
-      'fill="none" stroke="'+p.accent+'" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>' +
-      '<path d="M46 32 h14" stroke="'+p.accent+'" stroke-width="4" stroke-linecap="round"/>' +
-      '<path d="M70 18 l6 6 M70 24 v-8" stroke="'+p.accent+'" stroke-width="4" stroke-linecap="round"/>' +
-      '</svg>';
-  }
-
   var grid = document.getElementById('grid');
 
   PRODUCTS.forEach(function(p){
@@ -353,9 +338,7 @@
 
     tile.innerHTML =
       '<div class="img-wrap">' +
-        '<img src="../img/bikes2/bike'+p.id+'.png" alt="'+p.name+'" ' +
-          'onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">' +
-        '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;position:absolute;inset:0;">' + bikeSVG(p) + '</div>' +
+        '<img src="../img/bikes2/bike'+p.id+'.png" alt="'+p.name+'">' +
       '</div>' +
       '<div class="name">'+p.name+'</div>' +
       '<div class="plan">' +
@@ -424,8 +407,7 @@
       row.className = 'cart-item';
       row.innerHTML =
         '<div class="cart-thumb" style="background:var(--tint-'+p.tint+')">' +
-          '<img src="../img/bikes2/bike'+p.id+'.png" alt="" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">' +
-          '<div style="display:none;align-items:center;justify-content:center;width:100%;height:100%;">' + bikeSVG(p) + '</div>' +
+          '<img src="../img/bikes2/bike'+p.id+'.png" alt="">' +
         '</div>' +
         '<div class="cart-info">' +
           '<div class="cart-name">'+p.name+'</div>' +
