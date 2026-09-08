@@ -34,7 +34,7 @@
 
   /* ---------- TOP BAR ---------- */
   .topbar{
-    position:sticky; top:0; z-index:20;
+    position:fixed; top:0; left:0; right:0; z-index:20;
     background:var(--ink);
     color:var(--paper);
     padding: calc(14px + var(--safe-t)) 18px 16px;
@@ -85,7 +85,7 @@
     display:grid;
     grid-template-columns: 1fr;
     gap:12px;
-    padding: 18px;
+    padding: calc(94px + var(--safe-t)) 18px 18px;
   }
   .tile{
     position:relative;
@@ -115,10 +115,11 @@
     border-radius:16px;
     overflow:hidden;
     display:flex; align-items:center; justify-content:center;
+    padding:12px;
   }
-  .tile.selected .img-wrap{ aspect-ratio: 16/8; }
+  .tile.selected .img-wrap{ aspect-ratio: 16/9; }
   .img-wrap img{
-    width:100%; height:100%; object-fit:cover; display:block;
+    width:100%; height:100%; object-fit:contain; display:block;
   }
   .img-wrap svg{ width:66%; height:66%; }
   .tile.selected .img-wrap svg{ width:38%; height:38%; }
@@ -215,10 +216,11 @@
   .cart-thumb{
     width:56px; height:56px; border-radius:14px;
     flex:0 0 auto;
+    padding:6px;
     display:flex; align-items:center; justify-content:center;
     overflow:hidden;
   }
-  .cart-thumb img{ width:100%; height:100%; object-fit:cover; }
+  .cart-thumb img{ width:100%; height:100%; object-fit:contain; }
   .cart-thumb svg{ width:60%; height:60%; }
   .cart-info{ flex:1; min-width:0; }
   .cart-name{ font-size:14px; font-weight:700; letter-spacing:-0.01em; }
@@ -351,7 +353,7 @@
 
     tile.innerHTML =
       '<div class="img-wrap">' +
-        '<img src="bike_'+p.id+'.png" alt="'+p.name+'" ' +
+        '<img src="../img/bikes2/bike'+p.id+'.png" alt="'+p.name+'" ' +
           'onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">' +
         '<div style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;position:absolute;inset:0;">' + bikeSVG(p) + '</div>' +
       '</div>' +
@@ -422,7 +424,7 @@
       row.className = 'cart-item';
       row.innerHTML =
         '<div class="cart-thumb" style="background:var(--tint-'+p.tint+')">' +
-          '<img src="bike_'+p.id+'.png" alt="" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">' +
+          '<img src="../img/bikes2/bike'+p.id+'.png" alt="" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">' +
           '<div style="display:none;align-items:center;justify-content:center;width:100%;height:100%;">' + bikeSVG(p) + '</div>' +
         '</div>' +
         '<div class="cart-info">' +
